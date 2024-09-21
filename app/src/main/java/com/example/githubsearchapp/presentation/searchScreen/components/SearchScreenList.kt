@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.githubsearchapp.common.Resource
+import com.example.githubsearchapp.presentation.searchScreen.state.SearchListItemState
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchScreenListState
 import com.example.githubsearchapp.presentation.searchScreen.state.UserState
 import dagger.Provides
@@ -30,16 +31,10 @@ fun SearchScreenList(state: SearchScreenListState) {
         when (state.status) {
             Resource.Status.SUCCESS -> {
                 LazyColumn {
-                    items(state.list) {
-                        Row(
-                            modifier = Modifier
-                                .padding(bottom = 10.dp)
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceAround
-                        ) {
-                            Text(text = it.name, fontSize = 32.sp)
-                            Text(text = it.score.toString(), fontSize = 32.sp)
+                    items(state.list) { itemState ->
+                        when (itemState) {
+                            is SearchListItemState.RepositoryState -> RepositoryItem(state = itemState)
+                            is SearchListItemState.UserState -> UserItem(itemState)
                         }
                     }
                 }
@@ -85,9 +80,13 @@ fun SearchScreenLisSuccesstPreview() {
     SearchScreenList(
         state = SearchScreenListState(
             list = listOf(
-                UserState(name = "Jack", avatarURL = "", score = 145f),
-                UserState(name = "Duck", avatarURL = "", score = 1f),
-                UserState(name = "Bob", avatarURL = "", score = 2f),
+                SearchListItemState.UserState(name = "Jack", avatarURL = "", score = 145f),
+                SearchListItemState.RepositoryState(
+                    name = "Tetris",
+                    description = "Tetris game (my favorite)"
+                ),
+                SearchListItemState.UserState(name = "Duck", avatarURL = "", score = 1f),
+                SearchListItemState.UserState(name = "Bob", avatarURL = "", score = 2f),
             ),
             status = Resource.Status.SUCCESS
         )
