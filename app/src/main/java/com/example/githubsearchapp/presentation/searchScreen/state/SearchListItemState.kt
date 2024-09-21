@@ -7,6 +7,10 @@ sealed class SearchListItemState {
         val score: Float,
     ) : SearchListItemState()
 
-    data class RepositoryState(val name: String, val description: String) : SearchListItemState()
+    data class RepositoryState(
+        val name: String,
+        val description: String,
+        val forksNumber: Int
+    ) : SearchListItemState()
 
 }

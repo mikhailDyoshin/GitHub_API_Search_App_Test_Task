@@ -83,7 +83,8 @@ fun SearchScreenLisSuccessPreview() {
                     SearchListItemState.UserState(name = "Jack", avatarURL = "", score = 145f),
                     SearchListItemState.RepositoryState(
                         name = "Tetris",
-                        description = "Tetris game (my favorite)"
+                        description = "Tetris game (my favorite)",
+                        forksNumber = 13
                     ),
                     SearchListItemState.UserState(name = "Duck", avatarURL = "", score = 1f),
                     SearchListItemState.UserState(name = "Bob", avatarURL = "", score = 2f),

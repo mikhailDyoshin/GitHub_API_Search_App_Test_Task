@@ -33,9 +33,10 @@ class SearchRepositoryImplementation @Inject constructor(private val searchApi: 
                         userModelToUser(it)
                     }.toMutableList()
 
-                    val repositoriesData: List<Data.Repository> = repositoriesResponseBody.items.map {
-                        repositoryModelToRepository(it)
-                    }
+                    val repositoriesData: List<Data.Repository> =
+                        repositoriesResponseBody.items.map {
+                            repositoryModelToRepository(it)
+                        }
 
                     val data = usersData + repositoriesData
 
@@ -71,7 +72,11 @@ class SearchRepositoryImplementation @Inject constructor(private val searchApi: 
     }
 
     private fun repositoryModelToRepository(repository: RepositoryModel): Data.Repository {
-        return Data.Repository(name = repository.name, description = repository.description)
+        return Data.Repository(
+            name = repository.name,
+            description = repository.description,
+            numberOfForks = repository.numberOfForks
+        )
     }
 
 }

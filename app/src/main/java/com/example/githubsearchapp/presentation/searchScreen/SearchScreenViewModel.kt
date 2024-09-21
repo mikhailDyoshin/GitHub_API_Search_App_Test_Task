@@ -47,6 +47,7 @@ class SearchScreenViewModel @Inject constructor(
                                     SearchListItemState.RepositoryState(
                                         name = item.name ?: "No name",
                                         description = item.description ?: "No description",
+                                        forksNumber = item.numberOfForks ?: 0,
                                     )
                                 }
 
