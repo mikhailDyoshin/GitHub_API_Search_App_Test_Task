@@ -9,7 +9,8 @@ sealed class Data {
 
     data class User(
         val login: String?,
-        val avatarUrl: String?,
-        val score: Float?
+        val avatarURL: String?,
+        val score: Float?,
+        val htmlURL: String?
     )
 }

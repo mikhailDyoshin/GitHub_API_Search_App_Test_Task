@@ -73,7 +73,8 @@ fun UserItemPreview() {
         userState = SearchListItemState.UserState(
             name = "John Malkovich",
             avatarURL = "https://avatars.githubusercontent.com/u/65956?v=4",
-            score = 1.0f
+            score = 1.0f,
+            htmlURL = ""
         )
     )
 }

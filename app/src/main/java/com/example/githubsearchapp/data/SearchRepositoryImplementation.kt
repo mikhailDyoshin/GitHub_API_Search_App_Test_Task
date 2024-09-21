@@ -66,8 +66,9 @@ class SearchRepositoryImplementation @Inject constructor(private val searchApi: 
     private fun userModelToUser(userModel: UserModel): Data.User {
         return Data.User(
             login = userModel.login,
-            avatarUrl = userModel.avatarUrl,
-            score = userModel.score
+            avatarURL = userModel.avatarUrl,
+            score = userModel.score,
+            htmlURL = userModel.htmlURL
         )
     }
 

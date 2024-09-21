@@ -54,8 +54,9 @@ class SearchScreenViewModel @Inject constructor(
                                 is Data.User -> {
                                     SearchListItemState.UserState(
                                         name = item.login ?: "No name",
-                                        avatarURL = item.avatarUrl ?: "",
-                                        score = item.score ?: 0f
+                                        avatarURL = item.avatarURL ?: "",
+                                        score = item.score ?: 0f,
+                                        htmlURL = item.htmlURL
                                     )
                                 }
 

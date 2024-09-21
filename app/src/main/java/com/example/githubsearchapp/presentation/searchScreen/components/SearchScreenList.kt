@@ -80,14 +80,29 @@ fun SearchScreenLisSuccessPreview() {
         SearchScreenList(
             state = SearchScreenListState(
                 list = listOf(
-                    SearchListItemState.UserState(name = "Jack", avatarURL = "", score = 145f),
+                    SearchListItemState.UserState(
+                        name = "Jack",
+                        avatarURL = "",
+                        score = 145f,
+                        htmlURL = ""
+                    ),
                     SearchListItemState.RepositoryState(
                         name = "Tetris",
                         description = "Tetris game (my favorite)",
                         forksNumber = 13
                     ),
-                    SearchListItemState.UserState(name = "Duck", avatarURL = "", score = 1f),
-                    SearchListItemState.UserState(name = "Bob", avatarURL = "", score = 2f),
+                    SearchListItemState.UserState(
+                        name = "Duck",
+                        avatarURL = "",
+                        score = 1f,
+                        htmlURL = ""
+                    ),
+                    SearchListItemState.UserState(
+                        name = "Bob",
+                        avatarURL = "",
+                        score = 2f,
+                        htmlURL = ""
+                    ),
                 ),
                 status = Resource.Status.SUCCESS
             )

@@ -5,6 +5,7 @@ sealed class SearchListItemState {
         val name: String,
         val avatarURL: String,
         val score: Float,
+        val htmlURL: String?
     ) : SearchListItemState()
 
     data class RepositoryState(
