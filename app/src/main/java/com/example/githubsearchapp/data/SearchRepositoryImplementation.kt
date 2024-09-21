@@ -14,23 +14,42 @@ import javax.inject.Inject
 class SearchRepositoryImplementation @Inject constructor(private val searchApi: SearchApi) :
     SearchRepository {
 
-    override fun getUsers(searchInput: String): Flow<Resource<List<Data.User>>> = flow {
+    override fun getData(searchInput: String): Flow<Resource<List<Any>>> = flow {
         try {
             emit(Resource.loading())
 
-            val response = searchApi.getUsers(searchInput = searchInput)
+            val usersResponse = searchApi.getUsers(searchInput = searchInput)
+            val repositoriesResponse = searchApi.getRepositories(name = searchInput)
 
 
-            if (response.isSuccessful) {
+            if (usersResponse.isSuccessful && repositoriesResponse.isSuccessful) {
 
-                val responseBody = response.body()
+                val usersResponseBody = usersResponse.body()
+                val repositoriesResponseBody = repositoriesResponse.body()
 
-                if (responseBody != null) {
-                    emit(Resource.success(data = responseBody.items.map { userModelToUser(it) }))
+                if (usersResponseBody != null && repositoriesResponseBody != null) {
+
+                    val usersData: List<Data.User> = usersResponseBody.items.map {
+                        userModelToUser(it)
+                    }.toMutableList()
+
+                    val repositoriesData: List<Data.Repository> = repositoriesResponseBody.items.map {
+                        repositoryModelToRepository(it)
+                    }
+
+                    val data = usersData + repositoriesData
+
+                    emit(Resource.success(data = data))
                 }
-
             } else {
-                when (response.code()) {
+                when (usersResponse.code()) {
+                    401 -> emit(Resource.error(error = Resource.Error.ERROR_401))
+                    403 -> emit(Resource.error(error = Resource.Error.ERROR_403))
+                    404 -> emit(Resource.error(error = Resource.Error.ERROR_404))
+                    500 -> emit(Resource.error(error = Resource.Error.ERROR_500))
+                    else -> emit(Resource.error(error = Resource.Error.ERROR_UNDEFINED))
+                }
+                when (repositoriesResponse.code()) {
                     401 -> emit(Resource.error(error = Resource.Error.ERROR_401))
                     403 -> emit(Resource.error(error = Resource.Error.ERROR_403))
                     404 -> emit(Resource.error(error = Resource.Error.ERROR_404))
@@ -38,43 +57,6 @@ class SearchRepositoryImplementation @Inject constructor(private val searchApi: 
                     else -> emit(Resource.error(error = Resource.Error.ERROR_UNDEFINED))
                 }
             }
-
-
-        } catch (e: IOException) {
-            emit(Resource.error(error = Resource.Error.ERROR_NO_INTERNET_CONNECTION))
-        }
-    }
-
-    override fun getRepositories(repositoryName: String): Flow<Resource<List<Data.Repository>>> = flow {
-        try {
-            emit(Resource.loading())
-
-            val response = searchApi.getRepositories(name = repositoryName)
-
-
-            if (response.isSuccessful) {
-
-                val responseBody = response.body()
-
-                if (responseBody != null) {
-                    emit(Resource.success(data = responseBody.items.map {
-                        repositoryModelToRepository(
-                            it
-                        )
-                    }))
-                }
-
-            } else {
-                when (response.code()) {
-                    401 -> emit(Resource.error(error = Resource.Error.ERROR_401))
-                    403 -> emit(Resource.error(error = Resource.Error.ERROR_403))
-                    404 -> emit(Resource.error(error = Resource.Error.ERROR_404))
-                    500 -> emit(Resource.error(error = Resource.Error.ERROR_500))
-                    else -> emit(Resource.error(error = Resource.Error.ERROR_UNDEFINED))
-                }
-            }
-
-
         } catch (e: IOException) {
             emit(Resource.error(error = Resource.Error.ERROR_NO_INTERNET_CONNECTION))
         }

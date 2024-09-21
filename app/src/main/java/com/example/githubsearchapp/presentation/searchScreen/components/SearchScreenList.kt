@@ -2,10 +2,7 @@ package com.example.githubsearchapp.presentation.searchScreen.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -13,13 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.githubsearchapp.common.Resource
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchListItemState
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchScreenListState
-import com.example.githubsearchapp.presentation.searchScreen.state.UserState
-import dagger.Provides
 
 @Composable
 fun SearchScreenList(state: SearchScreenListState) {
@@ -35,6 +29,9 @@ fun SearchScreenList(state: SearchScreenListState) {
                         when (itemState) {
                             is SearchListItemState.RepositoryState -> RepositoryItem(state = itemState)
                             is SearchListItemState.UserState -> UserItem(itemState)
+                            null -> {
+                                // Do nothing
+                            }
                         }
                     }
                 }

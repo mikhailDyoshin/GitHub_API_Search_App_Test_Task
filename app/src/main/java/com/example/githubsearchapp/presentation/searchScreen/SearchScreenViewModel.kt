@@ -7,22 +7,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubsearchapp.common.Resource
 import com.example.githubsearchapp.domain.models.Data
-import com.example.githubsearchapp.domain.models.Repository
-import com.example.githubsearchapp.domain.models.User
-import com.example.githubsearchapp.domain.usecases.GetRepositoriesUseCase
-import com.example.githubsearchapp.domain.usecases.GetUsersUseCase
+import com.example.githubsearchapp.domain.usecases.GetDataUseCase
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchListItemState
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchScreenListState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchScreenViewModel @Inject constructor(
-    private val getUsersUseCase: GetUsersUseCase,
-    private val getRepositoriesUseCase: GetRepositoriesUseCase
+    private val getDataUseCase: GetDataUseCase
 ) :
     ViewModel() {
 
@@ -40,49 +35,55 @@ class SearchScreenViewModel @Inject constructor(
     }
 
     fun searchUsers() {
-        viewModelScope.launch {
-            val users = getUsersUseCase(searchInput = _searchInputState.value)
+        getDataUseCase(searchInput = _searchInputState.value).onEach { resource ->
 
-            val repositories = getRepositoriesUseCase(searchInput = _searchInputState.value)
+            when (resource.status) {
+                Resource.Status.SUCCESS -> {
+                    resource.data?.let {
+                        _searchListState.value = SearchScreenListState(list = it.map { item ->
 
-            val common = merge(users, repositories).map { resource ->
-                resource.data?.let {
-                    SearchScreenListState(list = it.map { item ->
+                            when (item) {
+                                is Data.Repository -> {
+                                    SearchListItemState.RepositoryState(
+                                        name = item.name ?: "No name",
+                                        description = item.description ?: "No description",
+                                    )
+                                }
 
-                        when (item) {
-                            is Data.Repository -> {
-                                SearchListItemState.RepositoryState(
-                                    name = item.name ?: "No name",
-                                    description = item.description ?: "No description",
-                                )
+                                is Data.User -> {
+                                    SearchListItemState.UserState(
+                                        name = item.login ?: "No name",
+                                        avatarURL = item.avatarUrl ?: "",
+                                        score = item.score ?: 0f
+                                    )
+                                }
+
+                                else -> {
+                                    null
+                                }
                             }
 
-                            is Data.User -> {
-                                SearchListItemState.UserState(
-                                    name = item.login ?: "No name",
-                                    avatarURL = item.avatarUrl ?: "",
-                                    score = item.score ?: 0f
-                                )
-                            }
 
-                            else -> {
-                                SearchListItemState.RepositoryState(
-                                    name = "",
-                                    description = "",
-                                )
-                            }
-                        }
+                        }, status = Resource.Status.SUCCESS)
+                    }
+                }
 
+                Resource.Status.ERROR -> {
+                    _searchListState.value = SearchScreenListState(
+                        list = emptyList(),
+                        status = Resource.Status.ERROR
+                    )
+                }
 
-                    }, status = resource.status)
+                Resource.Status.LOADING -> {
+                    _searchListState.value = SearchScreenListState(
+                        list = emptyList(),
+                        status = Resource.Status.LOADING
+                    )
                 }
             }
 
-            common.collect {
-                if (it != null) {
-                    _searchListState.value = it
-                }
-            }
-        }
+        }.launchIn(viewModelScope)
     }
+
 }
