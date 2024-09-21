@@ -1,5 +1,6 @@
 package com.example.githubsearchapp.presentation.searchScreen.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.githubsearchapp.common.Resource
@@ -73,19 +75,22 @@ fun SearchScreenListErrorPreview() {
 
 @Preview
 @Composable
-fun SearchScreenLisSuccesstPreview() {
-    SearchScreenList(
-        state = SearchScreenListState(
-            list = listOf(
-                SearchListItemState.UserState(name = "Jack", avatarURL = "", score = 145f),
-                SearchListItemState.RepositoryState(
-                    name = "Tetris",
-                    description = "Tetris game (my favorite)"
+fun SearchScreenLisSuccessPreview() {
+    Column(modifier = Modifier.background(color = Color.White)) {
+        SearchScreenList(
+            state = SearchScreenListState(
+                list = listOf(
+                    SearchListItemState.UserState(name = "Jack", avatarURL = "", score = 145f),
+                    SearchListItemState.RepositoryState(
+                        name = "Tetris",
+                        description = "Tetris game (my favorite)"
+                    ),
+                    SearchListItemState.UserState(name = "Duck", avatarURL = "", score = 1f),
+                    SearchListItemState.UserState(name = "Bob", avatarURL = "", score = 2f),
                 ),
-                SearchListItemState.UserState(name = "Duck", avatarURL = "", score = 1f),
-                SearchListItemState.UserState(name = "Bob", avatarURL = "", score = 2f),
-            ),
-            status = Resource.Status.SUCCESS
+                status = Resource.Status.SUCCESS
+            )
         )
-    )
+    }
+
 }
