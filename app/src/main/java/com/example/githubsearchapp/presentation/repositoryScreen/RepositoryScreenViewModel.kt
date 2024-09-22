@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.githubsearchapp.common.Resource
 import com.example.githubsearchapp.domain.models.RepositoryContentRequestData
 import com.example.githubsearchapp.domain.usecases.GetRepositoryContentUseCase
+import com.example.githubsearchapp.presentation.repositoryScreen.state.RepositoryContentItemState
 import com.example.githubsearchapp.presentation.repositoryScreen.state.RepositoryContentState
 import com.example.githubsearchapp.presentation.repositoryScreen.state.RequestDataState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,7 +42,14 @@ class RepositoryScreenViewModel @Inject constructor(private val getRepositoryCon
                 Resource.Status.SUCCESS -> {
                     resource.data?.let {
                         _repositoryContentState.value = RepositoryContentState(
-                            repositoryContent = it.map { item -> "${item.name} ${item.type}" },
+                            repositoryContent = it.map { item ->
+                                RepositoryContentItemState(
+                                    name = item.name,
+                                    type = item.type,
+                                    path = item.path,
+                                    htmlURL = item.htmlURL
+                                )
+                            },
                             status = Resource.Status.SUCCESS
                         )
                     }
