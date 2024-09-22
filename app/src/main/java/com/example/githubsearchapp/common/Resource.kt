@@ -37,6 +37,16 @@ data class Resource<out T>(
             )
         }
 
+        fun mapHttpErrorCodeToResourceError(code: Int): Error {
+            return when (code) {
+                401 -> Error.ERROR_401
+                403 -> Error.ERROR_403
+                404 -> Error.ERROR_404
+                500 -> Error.ERROR_500
+                else -> Error.ERROR_UNDEFINED
+            }
+        }
+
         fun <T> loading(data: T? = null): Resource<T> {
             return Resource(status = Status.LOADING, data = data, message = null, error = null)
         }
