@@ -14,11 +14,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.githubsearchapp.common.Resource
+import com.example.githubsearchapp.presentation.navigation.navTypes.RepositoryNavData
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchListItemState
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchScreenListState
 
 @Composable
-fun SearchScreenList(state: SearchScreenListState) {
+fun SearchScreenList(
+    state: SearchScreenListState,
+    navigateToRepositoryContent: (RepositoryNavData) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -29,7 +33,10 @@ fun SearchScreenList(state: SearchScreenListState) {
                 LazyColumn {
                     items(state.list) { itemState ->
                         when (itemState) {
-                            is SearchListItemState.RepositoryState -> RepositoryItem(state = itemState)
+                            is SearchListItemState.RepositoryState -> RepositoryItem(
+                                state = itemState,
+                                navigateToRepositoryContent = { navigateToRepositoryContent(it) })
+
                             is SearchListItemState.UserState -> UserItem(itemState)
                             null -> {
                                 // Do nothing
@@ -58,7 +65,8 @@ fun SearchScreenListLoadingPreview() {
         state = SearchScreenListState(
             list = emptyList(),
             status = Resource.Status.LOADING
-        )
+        ),
+        navigateToRepositoryContent = {}
     )
 }
 
@@ -69,7 +77,8 @@ fun SearchScreenListErrorPreview() {
         state = SearchScreenListState(
             list = emptyList(),
             status = Resource.Status.ERROR
-        )
+        ),
+        navigateToRepositoryContent = {}
     )
 }
 
@@ -106,7 +115,8 @@ fun SearchScreenLisSuccessPreview() {
                     ),
                 ),
                 status = Resource.Status.SUCCESS
-            )
+            ),
+            navigateToRepositoryContent = {}
         )
     }
 

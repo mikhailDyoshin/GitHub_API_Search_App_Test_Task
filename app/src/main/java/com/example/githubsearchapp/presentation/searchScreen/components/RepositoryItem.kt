@@ -1,6 +1,7 @@
 package com.example.githubsearchapp.presentation.searchScreen.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,15 +16,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.githubsearchapp.presentation.navigation.navTypes.RepositoryNavData
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchListItemState
 
 @Composable
-fun RepositoryItem(state: SearchListItemState.RepositoryState) {
+fun RepositoryItem(
+    state: SearchListItemState.RepositoryState,
+    navigateToRepositoryContent: (RepositoryNavData) -> Unit
+) {
     Column(
         modifier = Modifier
             .background(color = Color.White, shape = RoundedCornerShape(4.dp))
             .padding(horizontal = 10.dp, vertical = 10.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                if (state.owner != null) {
+                    navigateToRepositoryContent(
+                        RepositoryNavData(
+                            owner = state.owner,
+                            repositoryName = state.name
+                        )
+                    )
+                }
+            },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -59,7 +74,8 @@ fun RepositoryItemPreview() {
                 description = "Repository to study Rust programming language",
                 forksNumber = 15,
                 owner = "John"
-            )
+            ),
+            navigateToRepositoryContent = {}
         )
     }
 }
