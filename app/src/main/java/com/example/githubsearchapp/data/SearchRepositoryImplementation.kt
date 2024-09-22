@@ -1,9 +1,9 @@
 package com.example.githubsearchapp.data
 
-import android.util.Log
 import com.example.githubsearchapp.common.RepositoryContentItemType
 import com.example.githubsearchapp.common.Resource
 import com.example.githubsearchapp.common.Resource.Companion.mapHttpErrorCodeToResourceError
+import com.example.githubsearchapp.common.utils.handleNetworkError
 import com.example.githubsearchapp.data.storage.SearchApi
 import com.example.githubsearchapp.data.storage.models.RepositoryContentItemModel
 import com.example.githubsearchapp.data.storage.models.RepositoryModel
@@ -55,7 +55,7 @@ class SearchRepositoryImplementation @Inject constructor(private val searchApi: 
         } catch (e: IOException) {
             emit(Resource.error(error = Resource.Error.ERROR_NO_INTERNET_CONNECTION))
         } catch (e: Exception) {
-            Log.d("Network request exception", "Exception: $e")
+            handleNetworkError(e)
         }
     }
 
@@ -87,7 +87,7 @@ class SearchRepositoryImplementation @Inject constructor(private val searchApi: 
             } catch (e: IOException) {
                 emit(Resource.error(error = Resource.Error.ERROR_NO_INTERNET_CONNECTION))
             } catch (e: Exception) {
-                Log.d("Network request exception", "Exception: $e")
+                handleNetworkError(e)
             }
 
         }
