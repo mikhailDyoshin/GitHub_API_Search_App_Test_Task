@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
@@ -19,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.ImeAction.Companion.Search
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.githubsearchapp.common.Resource
@@ -71,9 +69,6 @@ fun SearchField(
             ),
             shape = RoundedCornerShape(16.dp),
             singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = Search
-            ),
             keyboardActions = KeyboardActions(
                 onSearch = {
                     search()
@@ -93,7 +88,7 @@ fun SearchField(
                 contentColor = Color.Black,
                 containerColor = backgroundColor
             ),
-            enabled = enabled
+            enabled = enabled && text.length >= 3
         ) {
             Text(text = "Search", color = Color.Black)
 //            Image(
