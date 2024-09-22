@@ -20,6 +20,7 @@ fun SearchScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         SearchField(
             text = searchInputState,
+            status = state.status,
             updateSearchInput = { updateSearchInput(it) },
             search = { onSearch() })
         SearchScreenList(

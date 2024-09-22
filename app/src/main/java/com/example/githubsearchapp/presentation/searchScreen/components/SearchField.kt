@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -21,11 +22,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction.Companion.Search
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.githubsearchapp.common.Resource
+import com.example.githubsearchapp.ui.theme.SearchBarBackgroundColor
 
 @Composable
-fun SearchField(text: String, updateSearchInput: (searchInput: String) -> Unit, search: () -> Unit) {
+fun SearchField(
+    text: String,
+    status: Resource.Status,
+    updateSearchInput: (searchInput: String) -> Unit,
+    search: () -> Unit
+) {
 
-    val backgroundColor = Color(0xFFCCCBCB)
+    val backgroundColor = SearchBarBackgroundColor
+
+    val enabled = when (status) {
+        Resource.Status.SUCCESS -> true
+        Resource.Status.ERROR -> true
+        Resource.Status.LOADING -> false
+    }
 
     Row(
         modifier = Modifier
@@ -65,13 +79,21 @@ fun SearchField(text: String, updateSearchInput: (searchInput: String) -> Unit, 
                     search()
                 }
             ),
+            enabled = enabled,
         )
 
         IconButton(
             onClick = { search() },
             Modifier
                 .wrapContentHeight(align = Alignment.CenterVertically)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            colors = IconButtonColors(
+                disabledContentColor = Color.Gray,
+                disabledContainerColor = Color.Gray,
+                contentColor = Color.Black,
+                containerColor = backgroundColor
+            ),
+            enabled = enabled
         ) {
             Text(text = "Search", color = Color.Black)
 //            Image(
@@ -85,7 +107,15 @@ fun SearchField(text: String, updateSearchInput: (searchInput: String) -> Unit, 
 @Preview
 @Composable
 fun SearchFieldPreview() {
-    SearchField(text = "Hello", updateSearchInput = {}) {
+    SearchField(text = "Hello", status = Resource.Status.SUCCESS, updateSearchInput = {}) {
+
+    }
+}
+
+@Preview
+@Composable
+fun SearchFieldDisabledPreview() {
+    SearchField(text = "Hello", status = Resource.Status.LOADING, updateSearchInput = {}) {
 
     }
 }
