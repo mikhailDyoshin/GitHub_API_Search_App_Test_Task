@@ -14,7 +14,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.githubsearchapp.common.RepositoryContentItemType
 import com.example.githubsearchapp.presentation.destinations.RepositoryScreenWrapperDestination
+import com.example.githubsearchapp.presentation.destinations.WebViewWrapperDestination
 import com.example.githubsearchapp.presentation.repositoryScreen.state.RequestDataState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -50,13 +52,28 @@ fun RepositoryScreenWrapper(
                     Modifier
                         .fillMaxWidth()
                         .clickable {
-                            navigator.navigate(
-                                RepositoryScreenWrapperDestination(
-                                    owner = owner,
-                                    repository = repository,
-                                    path = item.path ?: ""
-                                )
-                            )
+                            when (item.type) {
+                                RepositoryContentItemType.FILE -> {
+                                    if (item.htmlURL != null) {
+                                        navigator.navigate(WebViewWrapperDestination(url = item.htmlURL))
+                                    }
+                                }
+
+                                RepositoryContentItemType.DIR -> {
+                                    navigator.navigate(
+                                        RepositoryScreenWrapperDestination(
+                                            owner = owner,
+                                            repository = repository,
+                                            path = item.path ?: ""
+                                        )
+                                    )
+                                }
+
+                                null -> {
+                                    // Do nothing
+                                }
+                            }
+
                         },
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly
