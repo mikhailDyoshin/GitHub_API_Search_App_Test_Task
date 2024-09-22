@@ -57,7 +57,8 @@ fun RepositoryItemPreview() {
             state = SearchListItemState.RepositoryState(
                 name = "Rust-Tutorial",
                 description = "Repository to study Rust programming language",
-                forksNumber = 15
+                forksNumber = 15,
+                owner = "John"
             )
         )
     }

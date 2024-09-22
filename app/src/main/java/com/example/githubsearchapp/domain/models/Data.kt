@@ -4,7 +4,8 @@ sealed class Data {
     data class Repository(
         val name: String?,
         val description: String?,
-        val numberOfForks: Int?
+        val numberOfForks: Int?,
+        val owner: User?
     )
 
     data class User(

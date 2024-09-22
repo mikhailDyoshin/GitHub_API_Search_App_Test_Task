@@ -76,7 +76,8 @@ class SearchRepositoryImplementation @Inject constructor(private val searchApi: 
         return Data.Repository(
             name = repository.name,
             description = repository.description,
-            numberOfForks = repository.numberOfForks
+            numberOfForks = repository.numberOfForks,
+            owner = repository.owner?.let { userModelToUser(it) }
         )
     }
 

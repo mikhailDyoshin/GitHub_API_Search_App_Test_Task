@@ -18,8 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchScreenViewModel @Inject constructor(
     private val getDataUseCase: GetDataUseCase
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _searchInputState: MutableState<String> = mutableStateOf("")
 
@@ -48,6 +47,7 @@ class SearchScreenViewModel @Inject constructor(
                                         name = item.name ?: "No name",
                                         description = item.description ?: "No description",
                                         forksNumber = item.numberOfForks ?: 0,
+                                        owner = item.owner?.login
                                     )
                                 }
 

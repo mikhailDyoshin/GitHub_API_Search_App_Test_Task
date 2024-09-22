@@ -11,7 +11,8 @@ sealed class SearchListItemState {
     data class RepositoryState(
         val name: String,
         val description: String,
-        val forksNumber: Int
+        val forksNumber: Int,
+        val owner: String?
     ) : SearchListItemState()
 
 }

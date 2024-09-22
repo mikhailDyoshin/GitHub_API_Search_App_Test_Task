@@ -89,7 +89,8 @@ fun SearchScreenLisSuccessPreview() {
                     SearchListItemState.RepositoryState(
                         name = "Tetris",
                         description = "Tetris game (my favorite)",
-                        forksNumber = 13
+                        forksNumber = 13,
+                        owner = "John"
                     ),
                     SearchListItemState.UserState(
                         name = "Duck",
