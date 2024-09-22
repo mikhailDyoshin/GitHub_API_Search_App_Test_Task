@@ -13,8 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.githubsearchapp.common.RepositoryContentItemType
+import com.example.githubsearchapp.common.Resource
+import com.example.githubsearchapp.presentation.common.LoadingIndicator
 import com.example.githubsearchapp.presentation.destinations.RepositoryScreenWrapperDestination
 import com.example.githubsearchapp.presentation.destinations.WebViewWrapperDestination
 import com.example.githubsearchapp.presentation.repositoryScreen.state.RequestDataState
@@ -44,44 +47,51 @@ fun RepositoryScreenWrapper(
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceAround
+        verticalArrangement = Arrangement.Center
     ) {
-        LazyColumn {
-            items(viewModel.repositoryContentState.value.repositoryContent) { item ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            when (item.type) {
-                                RepositoryContentItemType.FILE -> {
-                                    if (item.htmlURL != null) {
-                                        navigator.navigate(WebViewWrapperDestination(url = item.htmlURL))
+        when (viewModel.repositoryContentState.value.status) {
+            Resource.Status.SUCCESS -> {
+                LazyColumn {
+                    items(viewModel.repositoryContentState.value.repositoryContent) { item ->
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    when (item.type) {
+                                        RepositoryContentItemType.FILE -> {
+                                            if (item.htmlURL != null) {
+                                                navigator.navigate(WebViewWrapperDestination(url = item.htmlURL))
+                                            }
+                                        }
+
+                                        RepositoryContentItemType.DIR -> {
+                                            navigator.navigate(
+                                                RepositoryScreenWrapperDestination(
+                                                    owner = owner,
+                                                    repository = repository,
+                                                    path = item.path ?: ""
+                                                )
+                                            )
+                                        }
+
+                                        null -> {
+                                            // Do nothing
+                                        }
                                     }
-                                }
 
-                                RepositoryContentItemType.DIR -> {
-                                    navigator.navigate(
-                                        RepositoryScreenWrapperDestination(
-                                            owner = owner,
-                                            repository = repository,
-                                            path = item.path ?: ""
-                                        )
-                                    )
-                                }
-
-                                null -> {
-                                    // Do nothing
-                                }
-                            }
-
-                        },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Text(text = item.type.toString(), modifier = Modifier.weight(1f))
-                    Text(text = item.name ?: "", modifier = Modifier.weight(1f))
+                                },
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            Text(text = item.type.toString(), modifier = Modifier.weight(1f))
+                            Text(text = item.name ?: "", modifier = Modifier.weight(1f))
+                        }
+                    }
                 }
             }
+            Resource.Status.ERROR ->  Text(text = "Error", fontSize = 42.sp)
+            Resource.Status.LOADING -> LoadingIndicator()
         }
+
     }
 }

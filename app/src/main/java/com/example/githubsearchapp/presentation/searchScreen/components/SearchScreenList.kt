@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.githubsearchapp.common.Resource
+import com.example.githubsearchapp.presentation.common.LoadingIndicator
 import com.example.githubsearchapp.presentation.navigation.navTypes.RepositoryNavData
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchListItemState
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchScreenListState
@@ -51,7 +52,7 @@ fun SearchScreenList(
             }
 
             Resource.Status.LOADING -> {
-                Text(text = "Loading...", fontSize = 42.sp)
+                LoadingIndicator()
             }
         }
     }
