@@ -13,10 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.githubsearchapp.common.RepositoryContentItemType
 import com.example.githubsearchapp.common.Resource
+import com.example.githubsearchapp.presentation.common.ErrorScreen
 import com.example.githubsearchapp.presentation.common.LoadingIndicator
 import com.example.githubsearchapp.presentation.destinations.RepositoryScreenWrapperDestination
 import com.example.githubsearchapp.presentation.destinations.WebViewWrapperDestination
@@ -34,14 +34,14 @@ fun RepositoryScreenWrapper(
     viewModel: RepositoryScreenViewModel = hiltViewModel()
 ) {
 
+    val requestDataState = RequestDataState(
+        owner = owner,
+        repository = repository,
+        path = path
+    )
+
     LaunchedEffect(true) {
-        viewModel.getRepositoryContents(
-            requestData = RequestDataState(
-                owner = owner,
-                repository = repository,
-                path = path
-            )
-        )
+        getContents(viewModel = viewModel, requestDataState = requestDataState)
     }
 
     Column(
@@ -89,9 +89,22 @@ fun RepositoryScreenWrapper(
                     }
                 }
             }
-            Resource.Status.ERROR ->  Text(text = "Error", fontSize = 42.sp)
+
+            Resource.Status.ERROR -> ErrorScreen(
+                errorMessage = viewModel.repositoryContentState.value.message,
+                onRetry = {
+                    getContents(viewModel = viewModel, requestDataState = requestDataState)
+                }
+            )
+
             Resource.Status.LOADING -> LoadingIndicator()
         }
 
     }
+}
+
+private fun getContents(viewModel: RepositoryScreenViewModel, requestDataState: RequestDataState) {
+    viewModel.getRepositoryContents(
+        requestData = requestDataState
+    )
 }

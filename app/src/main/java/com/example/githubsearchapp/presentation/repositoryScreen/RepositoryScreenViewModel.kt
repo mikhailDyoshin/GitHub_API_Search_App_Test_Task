@@ -58,7 +58,8 @@ class RepositoryScreenViewModel @Inject constructor(private val getRepositoryCon
                 Resource.Status.ERROR -> {
                     _repositoryContentState.value = RepositoryContentState(
                         repositoryContent = emptyList(),
-                        status = Resource.Status.ERROR
+                        status = Resource.Status.ERROR,
+                        message = resource.error?.message ?: ""
                     )
                 }
 

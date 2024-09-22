@@ -6,14 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.example.githubsearchapp.common.Resource
+import com.example.githubsearchapp.presentation.common.ErrorScreen
 import com.example.githubsearchapp.presentation.common.LoadingIndicator
 import com.example.githubsearchapp.presentation.navigation.navTypes.RepositoryNavData
 import com.example.githubsearchapp.presentation.searchScreen.state.SearchListItemState
@@ -22,7 +21,8 @@ import com.example.githubsearchapp.presentation.searchScreen.state.SearchScreenL
 @Composable
 fun SearchScreenList(
     state: SearchScreenListState,
-    navigateToRepositoryContent: (RepositoryNavData) -> Unit
+    navigateToRepositoryContent: (RepositoryNavData) -> Unit,
+    onRetry: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -48,7 +48,7 @@ fun SearchScreenList(
             }
 
             Resource.Status.ERROR -> {
-                Text(text = "Error", fontSize = 42.sp)
+                ErrorScreen(errorMessage = state.message, onRetry = { onRetry() })
             }
 
             Resource.Status.LOADING -> {
@@ -67,7 +67,8 @@ fun SearchScreenListLoadingPreview() {
             list = emptyList(),
             status = Resource.Status.LOADING
         ),
-        navigateToRepositoryContent = {}
+        navigateToRepositoryContent = {},
+        onRetry = {}
     )
 }
 
@@ -77,9 +78,11 @@ fun SearchScreenListErrorPreview() {
     SearchScreenList(
         state = SearchScreenListState(
             list = emptyList(),
-            status = Resource.Status.ERROR
+            status = Resource.Status.ERROR,
+            message = "No Internet"
         ),
-        navigateToRepositoryContent = {}
+        navigateToRepositoryContent = {},
+        onRetry = {}
     )
 }
 
@@ -117,7 +120,8 @@ fun SearchScreenLisSuccessPreview() {
                 ),
                 status = Resource.Status.SUCCESS
             ),
-            navigateToRepositoryContent = {}
+            navigateToRepositoryContent = {},
+            onRetry = {}
         )
     }
 

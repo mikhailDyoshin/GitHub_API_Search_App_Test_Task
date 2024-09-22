@@ -25,6 +25,8 @@ fun SearchScreen(
             search = { onSearch() })
         SearchScreenList(
             state = state,
-            navigateToRepositoryContent = { navigateToRepositoryContent(it) })
+            navigateToRepositoryContent = { navigateToRepositoryContent(it) },
+            onRetry = { onSearch() }
+        )
     }
 }

@@ -13,3 +13,9 @@ val Pink40 = Color(0xFF7D5260)
 val ScoreColor = Color(0xFFFD8201)
 
 val SearchBarBackgroundColor = Color(0xFFCCCBCB)
+
+val ErrorScreenBackgroundColor = Color(0xFFBDBDBD)
+
+val ErrorScreenButtonBackgroundColor = Color(0xFF8B8B8B)
+
+val ErrorScreenButtonTextColor = Color(0xFF000000)

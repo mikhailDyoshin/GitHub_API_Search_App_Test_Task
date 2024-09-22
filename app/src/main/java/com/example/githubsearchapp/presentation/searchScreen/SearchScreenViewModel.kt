@@ -73,7 +73,8 @@ class SearchScreenViewModel @Inject constructor(
                 Resource.Status.ERROR -> {
                     _searchListState.value = SearchScreenListState(
                         list = emptyList(),
-                        status = Resource.Status.ERROR
+                        status = Resource.Status.ERROR,
+                        message = resource.error?.message ?: ""
                     )
                 }
 
