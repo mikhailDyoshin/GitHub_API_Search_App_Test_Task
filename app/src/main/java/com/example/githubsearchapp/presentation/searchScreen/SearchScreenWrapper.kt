@@ -22,7 +22,7 @@ fun SearchScreenWrapper(
         onSearch = { viewModel.searchData() },
         navigateToRepositoryContent = {
             navigator.navigate(
-                RepositoryScreenWrapperDestination(owner = it.owner, repository = it.repositoryName)
+                RepositoryScreenWrapperDestination(owner = it.owner, repository = it.repositoryName, path = "")
             )
         }
 
