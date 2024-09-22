@@ -33,7 +33,7 @@ class SearchScreenViewModel @Inject constructor(
         _searchInputState.value = searchInput
     }
 
-    fun searchUsers() {
+    fun searchData() {
         getDataUseCase(searchInput = _searchInputState.value).onEach { resource ->
 
             when (resource.status) {

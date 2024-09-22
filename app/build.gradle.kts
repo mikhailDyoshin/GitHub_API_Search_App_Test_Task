@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -94,6 +95,12 @@ dependencies {
     // Dagger-Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+
+    // Compose destinations
+    implementation(libs.animations.core)
+
+    // KSP for Compose Destinations
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.8.42-beta")
 }
 
 kapt {
