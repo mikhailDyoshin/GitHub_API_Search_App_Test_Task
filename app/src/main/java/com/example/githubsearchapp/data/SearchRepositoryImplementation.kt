@@ -76,7 +76,9 @@ class SearchRepositoryImplementation @Inject constructor(private val searchApi: 
                         val repositoryContents =
                             responseBody.map { repositoryContentItemModelToRepositoryContentItem(it) }
 
-                        emit(Resource.success(data = repositoryContents))
+                        val sortedRepositoryContents = sortRepositoryContents(repositoryContents)
+
+                        emit(Resource.success(data = sortedRepositoryContents))
                     }
                 } else {
                     mapHttpErrorCodeToResourceError(response.code())
@@ -123,6 +125,11 @@ class SearchRepositoryImplementation @Inject constructor(private val searchApi: 
             "dir" -> RepositoryContentItemType.DIR
             else -> null
         }
+    }
+
+    private fun sortRepositoryContents(repositoryContent: List<RepositoryContentItem?>): List<RepositoryContentItem> {
+        return repositoryContent.filterNotNull()
+            .sortedWith(compareBy { it.type == RepositoryContentItemType.FILE })
     }
 
 }
