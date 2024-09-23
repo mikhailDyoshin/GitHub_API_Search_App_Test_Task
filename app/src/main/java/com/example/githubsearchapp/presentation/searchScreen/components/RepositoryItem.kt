@@ -84,7 +84,7 @@ fun RepositoryItem(
 @Preview
 @Composable
 fun RepositoryItemPreview() {
-    Column(modifier = Modifier.background(color = Color.Gray)) {
+    Column(modifier = Modifier.background(color = Color.White)) {
         RepositoryItem(
             state = SearchListItemState.RepositoryState(
                 name = "Rust-Tutorial",

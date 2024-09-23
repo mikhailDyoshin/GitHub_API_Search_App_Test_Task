@@ -53,7 +53,7 @@ fun SearchField(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = 5.dp)
+            .padding(bottom = 10.dp)
             .background(color = backgroundColor, shape = RoundedCornerShape(16.dp)),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
