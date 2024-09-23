@@ -23,3 +23,7 @@ val ErrorScreenBackgroundColor = Color(0xFFBDBDBD)
 val ErrorScreenButtonBackgroundColor = Color(0xFF8B8B8B)
 
 val ErrorScreenButtonTextColor = Color(0xFF000000)
+
+val DirIconColor = Color(0xFFD16B00)
+
+val FileIconColor = Color(0xFF797979)
