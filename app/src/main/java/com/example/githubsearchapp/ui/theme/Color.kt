@@ -14,6 +14,10 @@ val ScoreColor = Color(0xFFFD8201)
 
 val SearchBarBackgroundColor = Color(0xFFCCCBCB)
 
+val SearchButtonEnabledColor = Color(0xFF000000)
+
+val SearchButtonDisabledColor = Color(0xFF8B8B8B)
+
 val ErrorScreenBackgroundColor = Color(0xFFBDBDBD)
 
 val ErrorScreenButtonBackgroundColor = Color(0xFF8B8B8B)

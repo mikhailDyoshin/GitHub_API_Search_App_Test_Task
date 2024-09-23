@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.Text
@@ -18,10 +20,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.githubsearchapp.R
 import com.example.githubsearchapp.common.Resource
 import com.example.githubsearchapp.ui.theme.SearchBarBackgroundColor
+import com.example.githubsearchapp.ui.theme.SearchButtonDisabledColor
+import com.example.githubsearchapp.ui.theme.SearchButtonEnabledColor
 
 @Composable
 fun SearchField(
@@ -33,11 +40,15 @@ fun SearchField(
 
     val backgroundColor = SearchBarBackgroundColor
 
-    val enabled = when (status) {
+    val searchBarEnabled = when (status) {
         Resource.Status.SUCCESS -> true
         Resource.Status.ERROR -> true
         Resource.Status.LOADING -> false
     }
+
+    val buttonEnabled = searchBarEnabled && text.length >= 3
+
+    val buttonColor = if (buttonEnabled) SearchButtonEnabledColor else SearchButtonDisabledColor
 
     Row(
         modifier = Modifier
@@ -62,6 +73,7 @@ fun SearchField(
                 focusedContainerColor = backgroundColor,
                 unfocusedContainerColor = backgroundColor,
                 disabledContainerColor = backgroundColor,
+                disabledIndicatorColor = Color.Transparent,
                 cursorColor = Color.Black,
                 selectionColors = LocalTextSelectionColors.current,
                 focusedIndicatorColor = Color.Transparent,
@@ -74,7 +86,7 @@ fun SearchField(
                     search()
                 }
             ),
-            enabled = enabled,
+            enabled = searchBarEnabled,
         )
 
         IconButton(
@@ -84,17 +96,20 @@ fun SearchField(
                 .fillMaxWidth(),
             colors = IconButtonColors(
                 disabledContentColor = Color.Gray,
-                disabledContainerColor = Color.Gray,
+                disabledContainerColor = backgroundColor,
                 contentColor = Color.Black,
                 containerColor = backgroundColor
             ),
-            enabled = enabled && text.length >= 3
+            enabled = buttonEnabled
         ) {
-            Text(text = "Search", color = Color.Black)
-//            Image(
-//                painter = painterResource(id = R.drawable.search_icon_simple),
-//                contentDescription = "home button icon"
-//            )
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.search_icon),
+                contentDescription = "Search button icon",
+                modifier = Modifier
+                    .size(120.dp)
+                    .padding(4.dp),
+                tint = buttonColor
+            )
         }
     }
 }
