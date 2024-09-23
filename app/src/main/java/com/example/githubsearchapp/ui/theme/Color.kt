@@ -27,3 +27,5 @@ val ErrorScreenButtonTextColor = Color(0xFF000000)
 val DirIconColor = Color(0xFFD16B00)
 
 val FileIconColor = Color(0xFF797979)
+
+val RepositoryPathBarBackgroundColor = Color(0xFF9C9C9C)
