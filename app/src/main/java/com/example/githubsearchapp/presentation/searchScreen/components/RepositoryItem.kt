@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,44 +25,60 @@ fun RepositoryItem(
     state: SearchListItemState.RepositoryState,
     navigateToRepositoryContent: (RepositoryNavData) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .background(color = Color.White, shape = RoundedCornerShape(4.dp))
-            .padding(horizontal = 10.dp, vertical = 10.dp)
-            .fillMaxWidth()
-            .clickable {
-                if (state.owner != null) {
-                    navigateToRepositoryContent(
-                        RepositoryNavData(
-                            owner = state.owner,
-                            repositoryName = state.name
+
+    val cornerSize = 5.dp
+
+    Column(Modifier.padding(bottom = 10.dp)) {
+        Column(
+            modifier = Modifier
+                .shadow(4.dp, shape = RoundedCornerShape(cornerSize), clip = true)
+                .clickable {
+                    if (state.owner != null) {
+                        navigateToRepositoryContent(
+                            RepositoryNavData(
+                                owner = state.owner,
+                                repositoryName = state.name
+                            )
                         )
-                    )
+                    }
                 }
-            },
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(bottom = 5.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = state.name, fontSize = 20.sp)
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = state.forksNumber.toString(), fontSize = 16.sp)
-                Text(text = "Forks", fontSize = 16.sp)
+            Column(
+                modifier = Modifier
+                    .background(color = Color.White, shape = RoundedCornerShape(cornerSize))
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp, vertical = 10.dp)
+                    ,
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 5.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = state.name, fontSize = 20.sp)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = state.forksNumber.toString(), fontSize = 16.sp)
+                        Text(text = "Forks", fontSize = 16.sp)
+                    }
+                }
+                Text(
+                    text = state.description,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color.Gray,
+                    fontSize = 20.sp
+                )
+
+
             }
         }
-        Text(
-            text = state.description,
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.Gray,
-            fontSize = 20.sp
-        )
     }
+
+
 }
 
 @Preview
